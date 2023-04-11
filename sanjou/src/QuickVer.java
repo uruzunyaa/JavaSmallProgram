@@ -10,7 +10,7 @@ public class QuickVer {
         int a = scan.nextInt();
 
         //探索範囲の指定
-        System.out.println("|y|の最大値を決めてください。894以下にしないと、3乗の足し算でINT範囲を超えるかも？");
+        System.out.println("|y|の最大値を決めてください。");
         int maxY = scan.nextInt();
 
         //標準入力の読み込みを終了
