@@ -1,52 +1,58 @@
 import java.util.Scanner;
 import java.math.BigInteger;
+
 public class QuickVer {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
+
+        //aを取得
         System.out.println("x^3+y^3+z^3=a　となるx,y,zを探します。|x|<=|y|<=|z|とします。aを決めてください。");
         int a = scan.nextInt();
-        System.out.println("|z|の最大値を決めてください。894以下にしないと、3乗の足し算でINT範囲を超えるかも？");
-        int maxZ = scan.nextInt();
-        scan.close();
-        for(int absoluteZ = 0;absoluteZ <= maxZ ;absoluteZ++){
-            for(int absoluteY = 0;absoluteY <= absoluteZ ;absoluteY++){
-                for(int absoluteX = 0;absoluteX <= absoluteY ;absoluteX++){
-                    int z = absoluteZ;
-                    int y = absoluteY;
-                    int x = absoluteX;
-                    for(int i = 0;i<2;i++){
-                        for(int j = 0;j<2;j++){
-                            for(int k = 0;k<2;k++){
-                                if(check(x,y,z,a)){
-                                    System.out.println(x+"^3+"+y+"^3+"+z+"^3="+a);
-                                }
-                                x *= -1;
-                            }
-                            y *= -1;
-                        }
-                        z *= -1;
-                    }    
-                }       
-            }           
-        }        
-    }
-    //3乗の等式が正しいかをチェックするメソッド
-    public static boolean check(int x, int y, int z, int a) {
-        //長桁に対応する変数に変換
-        BigInteger xBigInt = BigInteger.valueOf(x);
-        BigInteger yBigInt = BigInteger.valueOf(y);
-        BigInteger zBigInt = BigInteger.valueOf(z);
-        BigInteger aBigInt = BigInteger.valueOf(a);
-    
-        //x,y,zを3乗する
-        BigInteger xCubed = xBigInt.pow(3);
-        BigInteger yCubed = yBigInt.pow(3);
-        BigInteger zCubed = zBigInt.pow(3);
 
-        //3乗した値の合計とaが等しいか比較する
-        BigInteger sumOfCubed = xCubed.add(yCubed).add(zCubed);
-    
-        //結果を返す
-        return sumOfCubed.equals(aBigInt);
+        //探索範囲の指定
+        System.out.println("|y|の最大値を決めてください。894以下にしないと、3乗の足し算でINT範囲を超えるかも？");
+        int maxY = scan.nextInt();
+
+        //標準入力の読み込みを終了
+        scan.close();
+
+        //ｘとｙの絶対値を決め、整数値のＺとなるかをループで調査
+        //x,yが同符号である事を前提としている
+        for (int absoluteY = 0; absoluteY <= maxY; absoluteY++) {
+            for (int absoluteX = 0; absoluteX <= absoluteY; absoluteX++) {
+                if (calculateZ(absoluteX, absoluteY, a) != 0) {
+                    System.out.println(absoluteX + "^3+" + absoluteY + "^3+" + calculateZ(absoluteX, absoluteY, a) + "^3=" + a);
+                } else if (calculateZ(-absoluteX, -absoluteY, a) != 0) {
+                    System.out.println(-absoluteX + "^3+" + -absoluteY + "^3+" + calculateZ(-absoluteX, -absoluteY, a) + "^3=" + a);
+                }
+
+            }
+            if(absoluteY % 10000 == 9999){
+                System.out.println(absoluteY);
+            }
+        }
+    }
+
+    //ｘとｙの値を決め、整数値のＺとなるかをループで調査するメソッド
+     public static int calculateZ(int x, int y, int a) {
+        //x,yを３乗し、INT範囲を超えても良いよう、BigIntegerクラスを利用
+        BigInteger xCubed = BigInteger.valueOf(x).pow(3);
+        BigInteger yCubed = BigInteger.valueOf(y).pow(3);
+
+        //aを比較の為、BigIntに変換
+        BigInteger aBigInt = BigInteger.valueOf(a);
+
+        //zの３乗の値を計算
+        BigInteger zCubed = aBigInt.subtract(xCubed).subtract(yCubed);
+
+        //zの値を計算
+        double z = Math.cbrt(zCubed.doubleValue());
+
+        // zが整数でなければ0を返す
+        if ((int)z == z) {
+            return (int)z;
+        }else{
+            return 0;
+        }
     }
 }
