@@ -1,11 +1,11 @@
 import java.util.Scanner;
 import java.math.BigInteger;
-public class BigIntVer {
+public class QuickVer {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         System.out.println("x^3+y^3+z^3=a　となるx,y,zを探します。|x|<=|y|<=|z|とします。aを決めてください。");
         int a = scan.nextInt();
-        System.out.println("|z|の最大値を決めてください。あまり大きいと計算に時間が掛かります。");
+        System.out.println("|z|の最大値を決めてください。894以下にしないと、3乗の足し算でINT範囲を超えるかも？");
         int maxZ = scan.nextInt();
         scan.close();
         for(int absoluteZ = 0;absoluteZ <= maxZ ;absoluteZ++){
@@ -24,7 +24,7 @@ public class BigIntVer {
                             }
                             y *= -1;
                         }
-                        z *= -1; 
+                        z *= -1;
                     }    
                 }       
             }           
