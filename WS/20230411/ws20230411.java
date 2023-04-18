@@ -1,7 +1,3 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigInteger;
 
 public class ws20230411 {
